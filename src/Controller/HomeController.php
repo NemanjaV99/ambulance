@@ -10,9 +10,11 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home")
+     * 
      */
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         /**
          *  If user is logged in 
          *  {
