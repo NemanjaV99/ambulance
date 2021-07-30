@@ -20,12 +20,28 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        // Admin test account
         $user = new User();
-
-        $user->setUsername('Test');
-        $user->setPassword($this->passHasher->hashPassword($user, 'test123'));
+        $user->setUsername('admin');
+        $user->setPassword($this->passHasher->hashPassword($user, 'admin123'));
+        $user->setRoles(['ROLE_ADMIN']);
         $user->setJoined(new DateTime());
+        $manager->persist($user);
 
+        // Doctor test account
+        $user = new User();
+        $user->setUsername('doctor');
+        $user->setPassword($this->passHasher->hashPassword($user, 'doctest123'));
+        $user->setRoles(['ROLE_DOCTOR']);
+        $user->setJoined(new DateTime());
+        $manager->persist($user);
+
+        // Counter test account
+        $user = new User();
+        $user->setUsername('counter');
+        $user->setPassword($this->passHasher->hashPassword($user, 'counter123'));
+        $user->setRoles(['ROLE_COUNTER']);
+        $user->setJoined(new DateTime());
         $manager->persist($user);
 
         $manager->flush();
