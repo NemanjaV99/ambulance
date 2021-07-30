@@ -15,28 +15,25 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        /**
-         *  If user is logged in 
-         *  {
-         *      #Check user type
-         * 
-         *      If user type === 'doctor'
-         * 
-         *          { show doctors section }
-         * 
-         *      Else if user type === 'admin'
-         * 
-         *          { show admins section }
-         *
-         *  }
-         * 
-         *  If user is not logged in
-         *  {
-         *      show him login form
-         *  }
-         * 
-         */
-            
-         return $this->render('index.html.twig', ['test' => 'Hello World!']);
+        
+        // If the above code passes, we need to redirect the user based on his role
+
+        $route = '';
+        
+        if ($this->isGranted('ROLE_ADMIN')) {
+
+            $route = 'admin_home';
+
+        } else if ($this->isGranted('ROLE_DOCTOR')) {
+
+            $route = 'doctor_home';
+
+        } else if ($this->isGranted('ROLE_COUNTER')) {
+
+            $route = 'counter_home';
+
+        }
+
+        return $this->redirectToRoute($route);
     }
 }
