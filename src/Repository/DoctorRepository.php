@@ -19,6 +19,40 @@ class DoctorRepository extends ServiceEntityRepository
         parent::__construct($registry, Doctor::class);
     }
 
+    /**
+     * @return Doctor[] Returns an array of Doctor objects joined with data from User, TypeDoctor
+     */
+    public function findAllJoinedToTypeAndUser()
+    {
+        $manager = $this->getEntityManager();
+
+        $query = $manager->createQuery(
+            'SELECT 
+                d.id AS doctor_id,
+                d.firstName AS doctor_fname,
+                d.lastName AS doctor_lname,
+                u.username AS doctor_user_username,
+                t.name AS doctor_type
+            FROM
+                App\Entity\Doctor d
+            INNER JOIN d.user u
+            INNER JOIN d.type t'
+        );
+
+        return $query->getResult();
+
+
+        /*
+        $qb = $this->createQueryBuilder('d')
+            ->innerJoin('d.user', 'u')
+            ->innerJoin('d.type', 't')
+            ->getQuery()
+            ->getResult();
+
+        return $qb;
+        */
+    }
+
     // /**
     //  * @return Doctor[] Returns an array of Doctor objects
     //  */

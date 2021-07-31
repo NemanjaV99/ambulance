@@ -1,0 +1,41 @@
+{% extends 'layouts/layout.main.html.twig' %}
+
+{% block page_content %}
+
+
+    <div class="doctors-list">
+
+        <h1 class="text-center mb-5">Doctors</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope='col'>ID</th>
+                    <th scope='col'>First Name</th>
+                    <th scope='col'>Last Name</th>
+                    <th scope='col'>Username</th>
+                    <th scope='col'>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for doctor in doctors %}
+
+                    <tr>
+                        <th scope='row'>{{ doctor.doctor_id }}</th>
+                        <td>{{ doctor.doctor_fname }}</td>
+                        <td>{{ doctor.doctor_lname }}</td>
+                        <td>{{ doctor.doctor_user_username }}</td>
+                        <td>{{ doctor.doctor_type }}</td>
+                    </tr>
+
+                {% endfor %}        
+
+            </tbody>
+
+        </table>
+       
+    </div>
+    
+
+{% endblock %}

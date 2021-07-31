@@ -4,12 +4,29 @@
 
 <main class="main">
 
-    <div class="sidebar">
+    <aside class="sidebar">
         <div class="sidebar__logo">Ambulance</div>
-        <nav class="sidebar__nav">{% block page_nav %}{% endblock %}</nav>
-    </div>
+        <nav class="sidebar__nav navigation">
+
+            {% if is_granted('ROLE_ADMIN') %}
+
+                <a href="{{ path('admin_doctor_list') }}" class="navigation__item">Doctors</a>
+                <a href="{{ path('admin_patient_list') }}" class="navigation__item">Patients</a>
+
+            {% endif %}
+
+            {% if is_granted('ROLE_DOCTOR') %}
+
+                <a href="#" class="navigation__item">Counter</a>
+
+            {% endif %}
+
+            <a href="/logout" class="navigation__item">Log out</a>
+
+        </nav>
+    </aside>
     
-    <div class="content">{% block page_content %}{% endblock %}</div>
+    <section class="section content">{% block page_content %}{% endblock %}</div>
 
 </main>
 

@@ -7,6 +7,7 @@
 * Sidebar
 * Content 
 * Form
+* Navigation
 *
 */
 
@@ -65,6 +66,33 @@ body {
 
     margin: 50px auto;
     width: 50%;
+}
+
+/*--------------------------------*\
+    #NAVIGATION
+\*--------------------------------*/
+.navigation__item {
+
+    color: rgb(255, 255, 255);
+    display: block;
+    padding: 15px 0;
+    text-decoration: none;
+    text-align: center;
+    transition: all .5s;
+}
+
+.navigation__item:hover,
+.navigation__item:active {
+
+    color:rgb(255, 255, 255);
+}
+
+.navigation__item--active,
+.navigation__item--active:hover,
+.navigation__item--active:active {
+
+    background-color:rgb(255, 255, 255);
+    color: rgb(70, 150, 0);
 }
 
 

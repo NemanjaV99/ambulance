@@ -35,6 +35,20 @@ class DoctorFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($doctor);
 
+        $doctor = new Doctor();
+        $doctor->setFirstName('Stefan');
+        $doctor->setLastName('Stefanovic');
+
+        // Retrieve the test doctor user account reference and link it with this doctor 
+        $user = $this->getReference('user.test_doctor_2');
+        $doctor->setUser($user);
+
+        // Retrieve the type doctor and link it with this test doctor
+        $type = $this->getReference('type_doctor.test');
+        $doctor->setType($type);
+
+        $manager->persist($doctor);
+
         $manager->flush();
     }
 }

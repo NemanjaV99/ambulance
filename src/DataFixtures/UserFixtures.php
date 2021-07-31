@@ -40,6 +40,17 @@ class UserFixtures extends Fixture
 
         $manager->persist($user);
 
+        $user = new User();
+        $user->setUsername('doctor2');
+        $user->setPassword($this->passHasher->hashPassword($user, 'doctor123'));
+        $user->setRoles(['ROLE_DOCTOR']);
+        $user->setJoined(new DateTime());
+
+        // This will set a reference that we can later use in the DoctorFixtures when creating test doctor
+        $this->setReference('user.test_doctor_2', $user);
+
+        $manager->persist($user);
+
         // Counter test account
         $user = new User();
         $user->setUsername('counter');
