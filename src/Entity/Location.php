@@ -22,12 +22,12 @@ class Location
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $city;
+    private $region;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $region;
+    private $city;
 
     /**
      * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="location")
@@ -44,18 +44,6 @@ class Location
         return $this->id;
     }
 
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
     public function getRegion(): ?string
     {
         return $this->region;
@@ -64,6 +52,18 @@ class Location
     public function setRegion(string $region): self
     {
         $this->region = $region;
+
+        return $this;
+    }
+    
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

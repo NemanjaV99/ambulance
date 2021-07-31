@@ -36,7 +36,7 @@ class Patient
     private $location;
 
     /**
-     * @ORM\Column(name="jmbg", type="integer")
+     * @ORM\Column(name="jmbg", type="bigint")
      */
     private $jmbg;
 
