@@ -15,6 +15,7 @@
                     <th scope='col'>Last Name</th>
                     <th scope='col'>Username</th>
                     <th scope='col'>Type</th>
+                    <th scope='col'>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,11 +23,15 @@
                 {% for doctor in doctors %}
 
                     <tr>
-                        <th scope='row'>{{ doctor.doctor_id }}</th>
-                        <td>{{ doctor.doctor_fname }}</td>
-                        <td>{{ doctor.doctor_lname }}</td>
-                        <td>{{ doctor.doctor_user_username }}</td>
+                        <th scope='row'>{{ doctor.id }}</th>
+                        <td>{{ doctor.first_name }}</td>
+                        <td>{{ doctor.last_name }}</td>
+                        <td>{{ doctor.username }}</td>
                         <td>{{ doctor.doctor_type }}</td>
+                        <td>
+                            <a href="#"><i class="far fa-trash-alt"></i></a>
+                            <a href="#"><i class="far fa-edit"></i></a>
+                        </td>
                     </tr>
 
                 {% endfor %}        

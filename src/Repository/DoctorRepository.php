@@ -20,7 +20,7 @@ class DoctorRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Doctor[] Returns an array of Doctor objects joined with data from User, TypeDoctor
+     * @return Doctor[] Returns an array of Doctor data joined with data from User, TypeDoctor
      */
     public function findAllJoinedToTypeAndUser()
     {
@@ -28,10 +28,10 @@ class DoctorRepository extends ServiceEntityRepository
 
         $query = $manager->createQuery(
             'SELECT 
-                d.id AS doctor_id,
-                d.firstName AS doctor_fname,
-                d.lastName AS doctor_lname,
-                u.username AS doctor_user_username,
+                d.id AS id,
+                d.firstName AS first_name,
+                d.lastName AS last_name,
+                u.username AS username,
                 t.name AS doctor_type
             FROM
                 App\Entity\Doctor d

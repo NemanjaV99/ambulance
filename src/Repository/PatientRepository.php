@@ -19,6 +19,31 @@ class PatientRepository extends ServiceEntityRepository
         parent::__construct($registry, Patient::class);
     }
 
+    /**
+     * @return Patient[] Returns an array of Patient data joined with data from Location
+     */
+    public function findAllJoinedToLocation()
+    {
+        $manager = $this->getEntityManager();
+
+        $query = $manager->createQuery(
+            'SELECT 
+                p.id AS id,
+                p.firstName AS first_name,
+                p.lastName AS last_name,
+                p.jmbg AS jmbg,
+                p.note AS note,
+                l.region AS loc_region,
+                l.city AS loc_city
+            FROM
+                App\Entity\Patient p
+            INNER JOIN p.location l
+            '
+        );
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Patient[] Returns an array of Patient objects
     //  */
