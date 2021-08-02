@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Patient;
+use App\Entity\Doctor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
@@ -21,18 +24,67 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/doctors", name="admin_doctor_list")
      */
-    public function listDoctors(DoctorRepository $doctorRepository): Response
+    public function listDoctors(DoctorRepository $doctorRepository, Request $request): Response
     {
         // Add pagination later
         $doctors = $doctorRepository->findAllJoinedToTypeAndUser();
 
-        return $this->render('admin/doctor/list.html.twig', ['doctors' => $doctors]);
+        $response = ['doctors' => $doctors];
+
+        if ($request->getSession()->has('doctor_delete_error')) {
+
+            $response['error'] = $request->getSession()->get('doctor_delete_error');
+            $request->getSession()->remove('doctor_delete_error');
+
+        } else if ($request->getSession()->has('doctor_delete_success')) {
+
+            $response['notice'] = $request->getSession()->get('doctor_delete_success');
+            $request->getSession()->remove('doctor_delete_success');
+        }
+
+        return $this->render('admin/doctor/list.html.twig', $response);
+    }
+
+    /**
+     * @Route("/admin/doctors/delete", name="admin_doctor_delete")
+     */
+    public function deleteDoctor(Request $request): Response
+    {
+        $status = false;
+
+        if ($request->request->has('identity') && is_numeric($request->request->get('identity'))) {
+
+            $doctorId = $request->request->get('identity');
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $doctor = $entityManager->getRepository(Doctor::class)->find($doctorId);
+
+            if ($doctor) {
+
+                // Before removing the doctor, we also need to remove his linked user account
+                $user = $doctor->getUser();
+
+                $entityManager->remove($doctor);
+                $entityManager->remove($user);
+                $entityManager->flush();
+
+                $status = true;
+            }
+        }
+
+        if ($status) {
+            $request->getSession()->set('doctor_delete_success', 'Successfully deleted the doctor.');
+        } else {
+            $request->getSession()->set('doctor_delete_error', 'Something went wrong. Failed to delete doctor.');
+        }
+
+        return $this->redirectToRoute('admin_doctor_list');
     }
 
     /**
      * @Route("/admin/patients", name="admin_patient_list")
      */
-    public function listPatients(PatientRepository $patientRepository): Response
+    public function listPatients(PatientRepository $patientRepository, Request $request): Response
     {
         // Add pagination later
         $patients = $patientRepository->findAllJoinedToLocation();
@@ -48,7 +100,51 @@ class AdminController extends AbstractController
             $patient['note'] .= '...';
         }
 
+        $response = ['patients' => $patients];
 
-        return $this->render('admin/patient/list.html.twig', ['patients' => $patients]);
+        if ($request->getSession()->has('patient_delete_error')) {
+
+            $response['error'] = $request->getSession()->get('patient_delete_error');
+            $request->getSession()->remove('patient_delete_error');
+
+        } else if ($request->getSession()->has('patient_delete_success')) {
+
+            $response['notice'] = $request->getSession()->get('patient_delete_success');
+            $request->getSession()->remove('patient_delete_success');
+        }
+
+        return $this->render('admin/patient/list.html.twig', $response);
+    }
+
+    /**
+     * @Route("/admin/patients/delete", name="admin_patient_delete")
+     */
+    public function deletePatient(Request $request): Response
+    {
+        $status = false;
+
+        if ($request->request->has('identity') && is_numeric($request->request->get('identity'))) {
+
+            $patientId = $request->request->get('identity');
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $patient = $entityManager->getRepository(Patient::class)->find($patientId);
+
+            if ($patient) {
+
+                $entityManager->remove($patient);
+                $entityManager->flush();
+
+                $status = true;
+            }
+        }
+
+        if ($status) {
+            $request->getSession()->set('patient_delete_success', 'Successfully deleted the patient.');
+        } else {
+            $request->getSession()->set('patient_delete_error', 'Something went wrong. Failed to delete patient.');
+        }
+
+        return $this->redirectToRoute('admin_patient_list');
     }
 }

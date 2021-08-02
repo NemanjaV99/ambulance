@@ -7,6 +7,12 @@
 
         <h1 class="text-center mb-5">Patients</h1>
 
+        {% if notice is defined %}
+          <div class="alert alert-success">{{ notice }}</div>
+        {% elseif error is defined %}
+          <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
         <table class="table">
             <thead>
                 <tr>
@@ -32,9 +38,9 @@
                         <td>{{ patient.note }}</td>
                         <td>{{ patient.loc_region }}</td>
                         <td>{{ patient.loc_city }}</td>
-                        <td>
-                            <a href="#"><i class="far fa-trash-alt"></i></a>
-                            <a href="#"><i class="far fa-edit"></i></a>
+                        <td data-controller="table-action">
+                            <button data-patient={{ patient.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
+                            <button class='button-link button-link--update'><i class="far fa-edit"></i></button>
                         </td>
                     </tr>
 
@@ -44,6 +50,29 @@
 
         </table>
        
+    </div>
+
+    {# Modals #}
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteConfirmModalTitle">Confirm deletion</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+              Are you sure that you want to delete this patient?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <form id="deleteForm" action="{{ path('admin_patient_delete') }}" method="post">
+                <button class="btn btn-primary" type="submit">Confirm</button>
+              </form>
+            </div>
+          </div>
+        </div>
     </div>
     
 
