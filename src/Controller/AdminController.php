@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Patient;
 use App\Entity\Doctor;
+use App\Entity\Location;
 use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
 use App\Form\PatientType;
@@ -136,6 +137,55 @@ class AdminController extends AbstractController
 
         return $this->render('admin/patient/list.html.twig', $response);
 
+    }
+
+    /**
+     * @Route("/admin/patients/{patientId}/update", name="admin_patient_update", requirements={"patientId"="\d+"})
+     */
+    public function updatePatient(int $patientId, Request $request)
+    {
+        $response = [];
+
+        // Find a patient with the given id
+        $entityManager = $this->getDoctrine()->getManager();
+        $patient = $entityManager->getRepository(Patient::class)->find($patientId);
+
+        if (!$patient) {
+
+            throw $this->createNotFoundException('Patient with given id was not found.');
+        }
+
+        // Otherwise patient was found, so we can populate the form with him
+        $updatePatientForm = $this->createForm(PatientType::class, $patient);
+        $updatePatientForm->handleRequest($request);
+
+        if ($updatePatientForm->isSubmitted() && $updatePatientForm->isValid()) {
+
+            $data = $request->request->all();
+            $data = $data['patient'];
+            
+            // First find a location with the passed id
+            $newLocation = $entityManager->getRepository(Location::class)->find($data['location']);
+
+            $patient->setFirstName($data['firstName']);
+            $patient->setLastName($data['lastName']);
+            $patient->setJMBG($data['jmbg']);
+            $patient->setNote($data['note']);
+            
+            if ($newLocation->getId() !== $patient->getLocation()->getId()) {
+
+                $patient->setLocation($newLocation);
+            }
+
+            $entityManager->flush();
+
+            $response['notice'] = 'Successfully updated the patient.';
+        }
+
+        $response['update_patient_form'] = $updatePatientForm->createView();
+
+
+        return $this->render('admin/patient/update.html.twig', $response);
     }
 
     /**

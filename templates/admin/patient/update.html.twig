@@ -1,0 +1,18 @@
+{% extends 'layouts/layout.main.html.twig' %}
+
+{% block page_content %}
+
+    {% if notice is defined %}
+    <div class="alert alert-success">{{ notice }}</div>
+    {% elseif error is defined %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+   
+    <div class="form-container">
+
+        <h2 class="text-center">Update Patient</h2>
+        {{ form(update_patient_form) }}
+
+    </div>
+
+{% endblock %}

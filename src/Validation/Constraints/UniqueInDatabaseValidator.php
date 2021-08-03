@@ -33,6 +33,11 @@ class UniqueInDatabaseValidator extends ConstraintValidator
         // Attempt to find a patient using the passed jmbg value
         $patient = $this->patientRepository->findByJmbg($value);
 
+        // If the currently validated patient is the same, then we want to allow this
+        if ($this->context->getObject()->getId() === $patient[0]->getId()) {
+            return;
+        }
+
         if ($patient) {
 
             // If a patient with given JMBG number was found, the value is not unique, so this constraint fails

@@ -51,7 +51,7 @@ class Patient
     private $location;
 
     /**
-     * @ORM\Column(name="jmbg", type="string", length=13)
+     * @ORM\Column(name="jmbg", type="string", length=13, unique=true)
      * @Assert\NotBlank
      * @Assert\Length(
      *      min = 13,
