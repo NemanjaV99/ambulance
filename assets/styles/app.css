@@ -7,6 +7,7 @@
 * Sidebar
 * Content 
 * Form
+* Table
 * Navigation
 * Button
 *
@@ -17,13 +18,29 @@
 *,
 *::after,
 *::before {
+
     box-sizing: inherit;
 }
 
+html {
+
+    height: 100%;
+}
+
 body {
+
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
+    background-color: rgb(250, 250, 250);
+    line-height: 1.1;
+    height: 100%;
 }
+
+.main {
+
+    height: 100%;
+}
+
 
 /*----------*** END OF BASE ***----------------*/
 
@@ -37,8 +54,9 @@ body {
 
     float: left;
     width: 15%;
-    height: 100vh;
+    height: 100%;
     background-color: rgb(70, 150, 0);
+    overflow: auto;
 }
 
     .sidebar__logo {
@@ -58,6 +76,8 @@ body {
     padding: 15px 20px;
     float: right;
     width: 85%;
+    height: 100%;
+    overflow: auto;
 }
 
 /*--------------------------------*\
@@ -65,8 +85,22 @@ body {
 \*--------------------------------*/
 .form-container {
 
-    margin: 50px auto;
+    margin: 90px auto;
     width: 50%;
+    padding: 15px 10px;
+    border-radius: 10px;
+    box-shadow: rgb(0 0 0 / 20%) 0px 1px 2px;
+    background-color: rgb(255, 255, 255);
+}
+
+/*--------------------------------*\
+    #TABLE
+\*--------------------------------*/
+.table-container {
+
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 20%) 0px 1px 2px;
+    padding: 8px 6px;
 }
 
 /*--------------------------------*\

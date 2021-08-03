@@ -33,13 +33,31 @@ class PatientRepository extends ServiceEntityRepository
                 p.lastName AS last_name,
                 p.jmbg AS jmbg,
                 p.note AS note,
-                l.region AS loc_region,
                 l.city AS loc_city
             FROM
                 App\Entity\Patient p
             INNER JOIN p.location l
             '
         );
+
+        return $query->getResult();
+    }
+
+    /**
+     * @return Patient Returns patient object by jmbg value
+     */
+    public function findByJmbg($jmbg)
+    {
+        $manager = $this->getEntityManager();
+
+        $query = $manager->createQuery(
+            'SELECT
+                p
+            FROM
+                App\Entity\Patient p 
+            WHERE
+                p.jmbg = :jmbg'
+        )->setParameter('jmbg', $jmbg);
 
         return $query->getResult();
     }

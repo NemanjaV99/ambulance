@@ -24,19 +24,21 @@ class LocationFixtures extends Fixture
     {
         $locations = Yaml::parseFile($this->locationsFile);
 
-        foreach ($locations as $region => $regionCities) {
+        $persistedLocations = [];
 
-              foreach ($regionCities as $city) {
+        foreach ($locations as $city) {
 
-                  $location = new Location();
-                  $location->setCity($city);
-                  $location->setRegion($region);
-
-                  $manager->persist($location);
-              }
+            $location = new Location();
+            $location->setCity($city);
+        
+            $manager->persist($location);
+            $persistedLocations[] = $location;
         }
 
-        $this->setReference('location.test', $location);
+        // Randomly select one of the persisted locations
+        // We could remove the element after retrieving it from the persisted array to make sure the same location is never selected twice, but for now this is okay
+        $this->setReference('location.test_1', $persistedLocations[rand(0, count($persistedLocations) - 1)]);
+        $this->setReference('location.test_2', $persistedLocations[rand(0, count($persistedLocations) - 1)]);
 
         $manager->flush();
     }

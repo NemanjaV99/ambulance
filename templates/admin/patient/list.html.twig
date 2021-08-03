@@ -13,7 +13,8 @@
           <div class="alert alert-danger">{{ error }}</div>
         {% endif %}
 
-        <table class="table">
+        <div class="table-container">
+          <table class="table">
             <thead>
                 <tr>
                     <th scope='col'>ID</th>
@@ -21,7 +22,6 @@
                     <th scope='col'>Last Name</th>
                     <th scope='col'>JMBG</th>
                     <th scope='col'>Note</th>
-                    <th scope='col'>Region</th>
                     <th scope='col'>City</th>
                     <th scope='col'>Actions</th>
                 </tr>
@@ -36,7 +36,6 @@
                         <td>{{ patient.last_name }}</td>
                         <td>{{ patient.jmbg }}</td>
                         <td>{{ patient.note }}</td>
-                        <td>{{ patient.loc_region }}</td>
                         <td>{{ patient.loc_city }}</td>
                         <td data-controller="table-action">
                             <button data-patient={{ patient.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
@@ -48,7 +47,15 @@
 
             </tbody>
 
-        </table>
+          </table>
+        </div>
+
+        <div class="form-container">
+          <h2 class="text-center">Add a new patient</h2>
+          
+          {{ form(create_patient_form) }}
+
+        </div>
        
     </div>
 

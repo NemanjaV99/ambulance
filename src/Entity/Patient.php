@@ -6,6 +6,8 @@ use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validation\Constraints as CustomAssert;
 
 /**
  * @ORM\Entity(repositoryClass=PatientRepository::class)
@@ -21,27 +23,52 @@ class Patient
 
     /**
      * @ORM\Column(name="first_name", type="string", length=100)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 100
+     * )
+     * @Assert\Type(type="alpha")
      */
     private $firstName;
 
     /**
      * @ORM\Column(name="last_name", type="string", length=100)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 100
+     * )
+     * @Assert\Type(type="alpha")
      */
     private $lastName;
 
     /**
      * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="patients")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid
      */
     private $location;
 
     /**
-     * @ORM\Column(name="jmbg", type="bigint")
+     * @ORM\Column(name="jmbg", type="string", length=13)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 13,
+     *      max = 13,
+     *      exactMessage = "The JMBG number should have exactly 13 numeric characters."
+     * )
+     * @Assert\Type(type="numeric", message="This value should be a number.")
+     * @CustomAssert\UniqueInDatabase
      */
     private $jmbg;
 
     /**
      * @ORM\Column(type="string", length=1000, nullable=true)
+     * @Assert\Length(
+     *      max = 1000
+     * )
+     * 
      */
     private $note;
 
@@ -96,12 +123,12 @@ class Patient
         return $this;
     }
 
-    public function getJMBG(): ?int
+    public function getJMBG(): ?string
     {
         return $this->jmbg;
     }
 
-    public function setJMBG(int $jmbg): self
+    public function setJMBG(string $jmbg): self
     {
         $this->jmbg = $jmbg;
 

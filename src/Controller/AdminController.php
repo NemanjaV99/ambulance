@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Patient;
-use App\Entity\Doctor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Patient;
+use App\Entity\Doctor;
 use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
+use App\Form\PatientType;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdminController extends AbstractController
 {
@@ -86,6 +88,25 @@ class AdminController extends AbstractController
      */
     public function listPatients(PatientRepository $patientRepository, Request $request): Response
     {
+        $patient = new Patient();
+        $response = [];
+
+        $newPatientForm = $this->createForm(PatientType::class, $patient);
+        $newPatientForm->handleRequest($request);
+
+        if ($newPatientForm->isSubmitted() && $newPatientForm->isValid()) {
+
+            // Proccess the creation of a new patient
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($patient);
+            $entityManager->flush();
+
+            $response['notice'] = 'Successfully created a new patient.';
+        }
+
+        // Otherwise, handle the regular part of loading all patients 
+        $response['create_patient_form'] = $newPatientForm->createView();
+
         // Add pagination later
         $patients = $patientRepository->findAllJoinedToLocation();
 
@@ -100,7 +121,7 @@ class AdminController extends AbstractController
             $patient['note'] .= '...';
         }
 
-        $response = ['patients' => $patients];
+        $response['patients'] = $patients;
 
         if ($request->getSession()->has('patient_delete_error')) {
 
@@ -114,6 +135,7 @@ class AdminController extends AbstractController
         }
 
         return $this->render('admin/patient/list.html.twig', $response);
+
     }
 
     /**

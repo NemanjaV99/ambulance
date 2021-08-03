@@ -20,21 +20,19 @@ class PatientFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        // Retrieve the referenced location used for these test patients
-        // For now, that is the last inserted location in database, and both will have the same location
-        $location = $this->getReference('location.test');
         
+  
         $patient = new Patient();
         $patient->setFirstName('Pero');
         $patient->setLastName('Peric');
-        $patient->setLocation($location);
+        $patient->setLocation($this->getReference('location.test_1'));
         $patient->setJMBG(1234567890001);
         $manager->persist($patient);
 
         $patient = new Patient();
         $patient->setFirstName('Luka');
         $patient->setLastName('Jankovic');
-        $patient->setLocation($location);
+        $patient->setLocation($this->getReference('location.test_2'));
         $patient->setJMBG(1342567870980);
         $manager->persist($patient);
 

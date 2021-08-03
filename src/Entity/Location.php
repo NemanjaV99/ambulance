@@ -22,11 +22,6 @@ class Location
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $region;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $city;
 
     /**
@@ -39,21 +34,14 @@ class Location
         $this->patients = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->city;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getRegion(): ?string
-    {
-        return $this->region;
-    }
-
-    public function setRegion(string $region): self
-    {
-        $this->region = $region;
-
-        return $this;
     }
     
     public function getCity(): ?string
