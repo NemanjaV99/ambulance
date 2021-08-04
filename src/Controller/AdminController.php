@@ -38,7 +38,7 @@ class AdminController extends AbstractController
         $response = [];
 
         $doctor->setUser($user);
-        $newDoctorForm = $this->createForm(DoctorType::class, $doctor);
+        $newDoctorForm = $this->createForm(DoctorType::class, $doctor, ['validation_groups' => ['doctor_create']]);
         $newDoctorForm->handleRequest($request);
 
         if ($newDoctorForm->isSubmitted() && $newDoctorForm->isValid()) {
@@ -80,6 +80,53 @@ class AdminController extends AbstractController
 
         return $this->render('admin/doctor/list.html.twig', $response);
     }
+
+    /**
+     * @Route("/admin/doctors/{doctorId}/update", name="admin_doctor_update", requirements={"doctorId"="\d+"})
+     */
+    public function updateDoctor(int $doctorId, Request $request)
+    {
+        $response = [];
+
+        // Find a doctor with the given id
+        $entityManager = $this->getDoctrine()->getManager();
+        $doctor = $entityManager->getRepository(Doctor::class)->find($doctorId);
+
+        if (!$doctor) {
+
+            throw $this->createNotFoundException('Doctor with given id was not found.');
+        }
+
+        // Otherwise patient was found, so we can populate the form with him
+        $updateDoctorForm = $this->createForm(DoctorType::class, $doctor, ['validation_groups' => ['doctor_update']]);
+
+        // Before handling the request, to prevent overwriting old password with empty string, save the old password
+        $userPass = $doctor->getUser()->getPassword();
+
+        // The request will be handled, and empty string will be set for user pass on the doctor->user object
+        // This is to prevent the exception when passing empty/null values to user->setPassword(), since we are not updating the password in this form
+        $updateDoctorForm->handleRequest($request);
+
+        // Before we then update, set the user pass back to the old one
+
+        if ($updateDoctorForm->isSubmitted() && $updateDoctorForm->isValid()) {
+            
+            $data = $updateDoctorForm->getData();
+
+            // Prevent setting password as empty string
+            $doctor->getUser()->setPassword($userPass);
+
+            $entityManager->flush();
+
+            $response['notice'] = 'Successfully updated the doctor.';
+        }
+
+        $response['update_doctor_form'] = $updateDoctorForm->createView();
+
+
+        return $this->render('admin/doctor/update.html.twig', $response);
+    }
+
 
     /**
      * @Route("/admin/doctors/delete", name="admin_doctor_delete")
@@ -199,11 +246,6 @@ class AdminController extends AbstractController
             
             // First find a location with the passed id
             $newLocation = $entityManager->getRepository(Location::class)->find($data['location']);
-
-            $patient->setFirstName($data['firstName']);
-            $patient->setLastName($data['lastName']);
-            $patient->setJMBG($data['jmbg']);
-            $patient->setNote($data['note']);
             
             if ($newLocation->getId() !== $patient->getLocation()->getId()) {
 

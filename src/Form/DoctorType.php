@@ -19,9 +19,7 @@ class DoctorType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('type')
             ->add('user', UserType::class)
-            ->add('submit', SubmitType::class, [
-                'label' => 'Create'
-            ]);
+            ->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -29,6 +27,7 @@ class DoctorType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Doctor::class,
             'cascade_validation' => true,
+            'validation_groups' => ['doctor_create', 'doctor_update'] 
         ]);
     }
 }

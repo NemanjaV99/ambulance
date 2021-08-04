@@ -1,0 +1,26 @@
+{% extends 'layouts/layout.main.html.twig' %}
+
+{% block page_content %}
+
+    {% if notice is defined %}
+        <div class="alert alert-success">{{ notice }}</div>
+    {% elseif error is defined %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+   
+    <div class="form-container">
+
+        <h2 class="text-center">Update Doctor</h2>
+        {{ form_start(update_doctor_form) }}
+
+            {{ form_row(update_doctor_form.firstName) }}
+            {{ form_row(update_doctor_form.lastName) }}
+            {{ form_row(update_doctor_form.type) }}
+            {{ form_row(update_doctor_form.user.username) }}
+            {% do update_doctor_form.user.password.setRendered() %}
+
+        {{ form_end(update_doctor_form) }}
+
+    </div>
+
+{% endblock %}

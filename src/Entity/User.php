@@ -24,12 +24,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"doctor_create", "doctor_update"})
      * @Assert\Length(
      *      min = 3,
-     *      max = 32
+     *      max = 32,
+     *      groups={"doctor_create", "doctor_update"}
      * )
-     * @Assert\Type(type="alnum")
+     * @Assert\Type(type="alnum", groups={"doctor_create", "doctor_update"})
      */
     private $username;
 
@@ -41,12 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"doctor_create"})
      * @Assert\Length(
      *      min = 8,
      *      max = 32,
-     *      minMessage = "The password should be at least 8 characters long."
+     *      minMessage = "The password should be at least 8 characters long.",
+     *      groups={"doctor_create"}
      * )
+     * When updating doctor data, we want to remove password validation, since that won't be updated
      */
     private $password;
 
@@ -56,10 +59,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $joined;
 
-    public function __toString()
-    {
-        return $this->username;
-    }
 
     public function getId(): ?int
     {

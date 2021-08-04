@@ -25,9 +25,7 @@ class PatientType extends AbstractType
                 'required' => false,
             ])
             ->add('location')
-            ->add('submit', SubmitType::class, [
-                'label' => 'Create'
-            ])
+            ->add('submit', SubmitType::class)
         ;
     }
 

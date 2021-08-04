@@ -22,37 +22,39 @@ class Doctor
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"doctor_create", "doctor_update"})
      * @Assert\Length(
      *      min = 3,
-     *      max = 100
+     *      max = 100,
+     *      groups={"doctor_create", "doctor_update"}
      * )
-     * @Assert\Type(type="alpha")
+     * @Assert\Type(type="alpha", groups={"doctor_create", "doctor_update"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"doctor_create", "doctor_update"})
      * @Assert\Length(
      *      min = 3,
-     *      max = 100
+     *      max = 100,
+     *      groups={"doctor_create", "doctor_update"}
      * )
-     * @Assert\Type(type="alpha")
+     * @Assert\Type(type="alpha", groups={"doctor_create", "doctor_update"})
      */
     private $lastName;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeDoctor::class, inversedBy="doctors")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Valid
+     * @Assert\Valid(groups={"doctor_create", "doctor_update"})
      */
     private $type;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Valid
+     * @Assert\Valid(groups={"doctor_create", "doctor_update"})
      */
     private $user;
 
