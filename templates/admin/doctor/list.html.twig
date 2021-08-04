@@ -47,6 +47,21 @@
 
           </table>
         </div>
+
+        <div class="form-container">
+          <h2 class="text-center">Add a new doctor</h2>
+          
+          {{ form_start(create_doctor_form) }}
+
+            {{ form_row(create_doctor_form.firstName) }}
+            {{ form_row(create_doctor_form.lastName) }}
+            {{ form_row(create_doctor_form.type) }}
+            {{ form_row(create_doctor_form.user.username) }}
+            {{ form_row(create_doctor_form.user.password) }}
+
+          {{ form_end(create_doctor_form) }}
+
+        </div>
        
     </div>
 

@@ -8,9 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validation\Constraints as CustomAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=PatientRepository::class)
+ * @UniqueEntity("jmbg")
  */
 class Patient
 {
@@ -59,7 +61,6 @@ class Patient
      *      exactMessage = "The JMBG number should have exactly 13 numeric characters."
      * )
      * @Assert\Type(type="numeric", message="This value should be a number.")
-     * @CustomAssert\UniqueInDatabase
      */
     private $jmbg;
 
@@ -142,7 +143,8 @@ class Patient
 
     public function setNote(?string $note): self
     {
-        $this->note = $note;
+        // Trim to prevent setting empty string as value, since note is not required - can be null
+        $this->note = trim($note);
 
         return $this;
     }

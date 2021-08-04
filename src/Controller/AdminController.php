@@ -9,10 +9,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Patient;
 use App\Entity\Doctor;
 use App\Entity\Location;
+use App\Entity\User;
+use App\Form\DoctorType;
+use App\Form\PatientType;
 use App\Repository\DoctorRepository;
 use App\Repository\PatientRepository;
-use App\Form\PatientType;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use DateTime;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class AdminController extends AbstractController
 {
@@ -27,12 +31,41 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/doctors", name="admin_doctor_list")
      */
-    public function listDoctors(DoctorRepository $doctorRepository, Request $request): Response
+    public function listDoctors(DoctorRepository $doctorRepository, Request $request, UserPasswordHasherInterface $passHasher): Response
     {
+        $user = new User();
+        $doctor = new Doctor();
+        $response = [];
+
+        $doctor->setUser($user);
+        $newDoctorForm = $this->createForm(DoctorType::class, $doctor);
+        $newDoctorForm->handleRequest($request);
+
+        if ($newDoctorForm->isSubmitted() && $newDoctorForm->isValid()) {
+
+           // Handle creating new doctor
+           // Proccess the creation of a new patient
+           $entityManager = $this->getDoctrine()->getManager();
+
+           // Hash the password and set the default values for doctor user
+           $user->setJoined(new DateTime());
+           $user->setRoles(['ROLE_DOCTOR']);
+           $user->setPassword($passHasher->hashPassword($user, $user->getPassword()));
+
+           $entityManager->persist($user);
+           $entityManager->persist($doctor);
+           $entityManager->flush();
+
+           $response['notice'] = 'Successfully created a new doctor.';
+        }
+
+        // Otherwise, handle the regular part of loading all patients 
+        $response['create_doctor_form'] = $newDoctorForm->createView();
+
         // Add pagination later
         $doctors = $doctorRepository->findAllJoinedToTypeAndUser();
 
-        $response = ['doctors' => $doctors];
+        $response['doctors'] = $doctors;
 
         if ($request->getSession()->has('doctor_delete_error')) {
 
