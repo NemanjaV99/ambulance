@@ -4,11 +4,17 @@
 
     <h1>Examinations</h1>
 
-    <section class="section examination-actions">
-        <a href="#">
+    <section class="section examination-actions mb-3 mt-3">
+        <a href="{{ path('examination_create') }}">
             <button class="btn btn-primary"><i class="fas fa-plus-circle"></i> Create new</button>
         </a>
     </section>
+
+    {% if notice is defined %}
+        <div class="alert alert-success">{{ notice }}</div>
+    {% elseif error is defined %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
 
     <section class="section examinations performed-examinations mb-5 mt-5">
 

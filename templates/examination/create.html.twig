@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Examination!{% endblock %}
+
+{% block page_body %}
+
+    <main class="main">
+
+        <div class="form-container">
+            <h2 class="text-center">Create a new examination</h2>
+            
+            {{ form_start(create_examination_form) }}
+  
+              {{ form_row(create_examination_form.patient) }}
+              {{ form_row(create_examination_form.doctor) }}
+              {{ form_row(create_examination_form.date) }}
+              {% do create_examination_form.diagnosis.setRendered() %}
+              {% do create_examination_form.performed.setRendered() %}
+  
+            {{ form_end(create_examination_form) }}
+  
+        </div>
+
+    </main>
+
+{% endblock %}

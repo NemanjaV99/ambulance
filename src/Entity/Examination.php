@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\ExaminationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=ExaminationRepository::class)
@@ -20,17 +23,20 @@ class Examination
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="examinations")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid(groups={"create_examination"})
      */
     private $patient;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Type(type="\DateTimeInterface",groups={"create_examination"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity=Doctor::class, inversedBy="examinations")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(groups={"create_examination"})
      */
     private $doctor;
 
@@ -42,7 +48,7 @@ class Examination
     /**
      * @ORM\Column(type="boolean")
      */
-    private $performed;
+    private $performed = 0;
 
     public function getId(): ?int
     {
@@ -107,5 +113,24 @@ class Examination
         $this->performed = $performed;
 
         return $this;
+    }
+
+    /**
+     *  * @Assert\Callback(groups={"create_examination"})
+     *  Callback for validating that a date is not set to a past date
+     */
+    public function validatePastDate(ExecutionContextInterface $context)
+    {
+        // This should contain the user input date
+        $passedDate = $this->getDate();
+        $currentDate = new DateTime();
+
+        if ($passedDate < $currentDate) {
+
+            $context->buildViolation("Date can't be set to a past date.")
+                ->atPath('date')
+                ->addViolation();
+        }
+
     }
 }

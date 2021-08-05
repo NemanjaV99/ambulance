@@ -38,3 +38,4 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/doctor, roles: ROLE_DOCTOR }
         - { path: ^/counter, roles: ['ROLE_DOCTOR', 'ROLE_COUNTER'] }
+        - { path: ^/examination, roles: ['ROLE_DOCTOR', 'ROLE_COUNTER'] }
