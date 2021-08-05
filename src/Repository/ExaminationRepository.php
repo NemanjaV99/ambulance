@@ -19,6 +19,30 @@ class ExaminationRepository extends ServiceEntityRepository
         parent::__construct($registry, Examination::class);
     }
 
+    public function findAllJoinedToDoctorAndPatient()
+    {
+        $manager = $this->getEntityManager();
+
+        $query = $manager->createQuery(
+            'SELECT 
+                e.id AS id,
+                e.date AS date,
+                e.diagnosis AS diagnosis,
+                e.performed AS performed,
+                p.firstName AS patient_fname,
+                p.lastName AS patient_lname,
+                p.jmbg AS patient_jmbg,
+                d.firstName AS doctor_fname,
+                d.lastName AS doctor_lname
+            FROM
+                App\Entity\Examination e
+            INNER JOIN e.patient p
+            INNER JOIN e.doctor d'
+        );
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Examination[] Returns an array of Examination objects
     //  */

@@ -33,6 +33,8 @@ class DoctorFixtures extends Fixture implements DependentFixtureInterface
         $type = $this->getReference('type_doctor.test');
         $doctor->setType($type);
 
+        $this->setReference('doctor.examination_1', $doctor);
+
         $manager->persist($doctor);
 
         $doctor = new Doctor();
@@ -46,6 +48,8 @@ class DoctorFixtures extends Fixture implements DependentFixtureInterface
         // Retrieve the type doctor and link it with this test doctor
         $type = $this->getReference('type_doctor.test');
         $doctor->setType($type);
+
+        $this->setReference('doctor.examination_2', $doctor);
 
         $manager->persist($doctor);
 

@@ -21,7 +21,6 @@ class PatientFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         
-  
         $patient = new Patient();
         $patient->setFirstName('Pero');
         $patient->setLastName('Peric');
@@ -29,12 +28,16 @@ class PatientFixtures extends Fixture implements DependentFixtureInterface
         $patient->setJMBG(1234567890001);
         $manager->persist($patient);
 
+        $this->setReference('patient.examination_1', $patient);
+
         $patient = new Patient();
         $patient->setFirstName('Luka');
         $patient->setLastName('Jankovic');
         $patient->setLocation($this->getReference('location.test_2'));
         $patient->setJMBG(1342567870980);
         $manager->persist($patient);
+
+        $this->setReference('patient.examination_2', $patient);
 
         $manager->flush();
     }

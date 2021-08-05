@@ -6,7 +6,7 @@ export default class extends Controller {
   
     appendToDelete() {
 
-        let patient = this.deleteBtnTarget.getAttribute('data-patient');
+        let patient = this.deleteBtnTarget.getAttribute('data-delete-index');
 
         let form = document.getElementById('deleteForm')
 

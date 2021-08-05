@@ -36,7 +36,7 @@
                         <td>{{ doctor.username }}</td>
                         <td>{{ doctor.doctor_type }}</td>
                         <td data-controller="table-action">
-                          <button data-patient={{ doctor.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
+                          <button data-delete-index={{ doctor.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
                           <a href="{{ path('admin_doctor_update', { 'doctorId': doctor.id }) }}"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
                       </td>
                     </tr>

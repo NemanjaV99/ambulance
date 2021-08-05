@@ -38,7 +38,7 @@
                         <td>{{ patient.note }}</td>
                         <td>{{ patient.loc_city }}</td>
                         <td data-controller="table-action">
-                            <button data-patient={{ patient.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
+                            <button data-delete-index={{ patient.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
                             <a href="{{ path('admin_patient_update', { 'patientId': patient.id }) }}"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
                         </td>
                     </tr>

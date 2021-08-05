@@ -15,9 +15,9 @@
 
             {% endif %}
 
-            {% if is_granted('ROLE_DOCTOR') %}
+            {% if ( is_granted('ROLE_DOCTOR') or is_granted('ROLE_COUNTER') ) %}
 
-                <a data-navigation-target="link" href="#" class="navigation__item">Counter</a>
+                <a data-navigation-target="link" href="{{ path('counter_home') }}" class="navigation__item">Counter</a>
 
             {% endif %}
 
