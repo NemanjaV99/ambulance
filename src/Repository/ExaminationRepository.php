@@ -32,6 +32,7 @@ class ExaminationRepository extends ServiceEntityRepository
                 p.firstName AS patient_fname,
                 p.lastName AS patient_lname,
                 p.jmbg AS patient_jmbg,
+                d.id AS doctor_id,
                 d.firstName AS doctor_fname,
                 d.lastName AS doctor_lname
             FROM

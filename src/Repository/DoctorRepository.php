@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Doctor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -51,6 +52,31 @@ class DoctorRepository extends ServiceEntityRepository
 
         return $qb;
         */
+    }
+
+    /**
+     * @return Doctor object using user id, joined with data from User, TypeDoctor
+     */
+    public function findByUserIdJoinedToUserAndType(int $userId)
+    {
+        $manager = $this->getEntityManager();
+
+        $query = $manager->createQuery(
+            'SELECT 
+                d.id AS id,
+                d.firstName AS first_name,
+                d.lastName AS last_name,
+                u.username AS username,
+                t.name AS doctor_type
+            FROM
+                App\Entity\Doctor d
+            INNER JOIN d.user u
+            INNER JOIN d.type t
+            WHERE
+                u.id = :id'
+        )->setParameter('id', $userId);
+
+        return $query->getSingleResult();
     }
 
     // /**

@@ -46,10 +46,14 @@
                             <td>{{ examination.doctor_fname ~ ' ' ~ examination.doctor_lname }}</td>
                             <td>{{ examination.date | date('F j, Y, g:i a') }}</td>
                             <td class="text-success">{{ 'Performed' }}</td>
-                            <td data-controller="table-action">
-                                <button data-delete-index={{ examination.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
-                                <a href="#"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
-                            </td>
+                            {% if examination.actions_allowed %}
+                                <td data-controller="table-action">
+                                    <button data-delete-index={{ examination.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
+                                    <a href="#"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
+                                </td>
+                            {% else %}
+                                <td>&nbsp;</td>
+                            {% endif %}
                         </tr>
     
                     {% endfor %}        
@@ -94,10 +98,14 @@
                             <td>{{ examination.doctor_fname ~  ' ' ~examination.doctor_lname }}</td>
                             <td>{{ examination.date | date('F j, Y, g:i a') }}</td>
                             <td class="text-danger">{{ 'Waiting' }}</td>
-                            <td data-controller="table-action">
-                                <button data-delete-index={{ examination.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
-                                <a href="#"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
-                            </td>
+                            {% if examination.actions_allowed %}
+                                <td data-controller="table-action">
+                                    <button data-delete-index={{ examination.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
+                                    <a href="#"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
+                                </td>
+                            {% else %}
+                                <td>&nbsp;</td>
+                            {% endif %}
                         </tr>
 
                     {% endfor %}        
@@ -126,7 +134,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <form id="deleteForm" action="#" method="post">
+              <form id="deleteForm" action="{{ path('examination_delete') }}" method="post">
                 <button class="btn btn-primary" type="submit">Confirm</button>
               </form>
             </div>
