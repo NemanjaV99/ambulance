@@ -118,7 +118,7 @@ class AdminController extends AbstractController
 
             $entityManager->flush();
 
-            $response['notice'] = 'Successfully updated the doctor.';
+            $response['notice'] = 'Successfully updated.';
         }
 
         $response['update_doctor_form'] = $updateDoctorForm->createView();
@@ -156,7 +156,7 @@ class AdminController extends AbstractController
         }
 
         if ($status) {
-            $request->getSession()->set('doctor_delete_success', 'Successfully deleted the doctor.');
+            $request->getSession()->set('doctor_delete_success', 'Successfully deleted.');
         } else {
             $request->getSession()->set('doctor_delete_error', 'Something went wrong. Failed to delete doctor.');
         }
@@ -254,7 +254,7 @@ class AdminController extends AbstractController
 
             $entityManager->flush();
 
-            $response['notice'] = 'Successfully updated the patient.';
+            $response['notice'] = 'Successfully updated.';
         }
 
         $response['update_patient_form'] = $updatePatientForm->createView();
@@ -287,7 +287,7 @@ class AdminController extends AbstractController
         }
 
         if ($status) {
-            $request->getSession()->set('patient_delete_success', 'Successfully deleted the patient.');
+            $request->getSession()->set('patient_delete_success', 'Successfully deleted.');
         } else {
             $request->getSession()->set('patient_delete_error', 'Something went wrong. Failed to delete patient.');
         }

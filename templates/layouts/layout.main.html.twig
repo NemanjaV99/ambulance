@@ -5,19 +5,19 @@
 <main class="main">
 
     <aside class="sidebar">
-        <div class="sidebar__logo">Ambulance</div>
-        <nav class="sidebar__nav navigation">
+        <div class="sidebar__logo"><a class="link" href="{{ path('home') }}">Ambulance</a></div>
+        <nav class="sidebar__nav navigation" data-controller="navigation">
 
             {% if is_granted('ROLE_ADMIN') %}
 
-                <a href="{{ path('admin_doctor_list') }}" class="navigation__item">Doctors</a>
-                <a href="{{ path('admin_patient_list') }}" class="navigation__item">Patients</a>
+                <a data-navigation-target="link" href="{{ path('admin_doctor_list') }}" class="navigation__item">Doctors</a>
+                <a data-navigation-target="link" href="{{ path('admin_patient_list') }}" class="navigation__item">Patients</a>
 
             {% endif %}
 
             {% if is_granted('ROLE_DOCTOR') %}
 
-                <a href="#" class="navigation__item">Counter</a>
+                <a data-navigation-target="link" href="#" class="navigation__item">Counter</a>
 
             {% endif %}
 
