@@ -44,6 +44,38 @@ class ExaminationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return Examination[] Returns an array of incomplete / not performed examinations for a specific doctor
+     */
+    public function findAllIncompleteByDoctorIdJoinedToDoctorAndPatient(int $doctorId)
+    {
+        $manager = $this->getEntityManager();
+
+        $query = $manager->createQuery(
+            'SELECT 
+                e.id AS id,
+                e.date AS date,
+                e.diagnosis AS diagnosis,
+                e.performed AS performed,
+                p.firstName AS patient_fname,
+                p.lastName AS patient_lname,
+                p.jmbg AS patient_jmbg,
+                d.id AS doctor_id,
+                d.firstName AS doctor_fname,
+                d.lastName AS doctor_lname
+            FROM
+                App\Entity\Examination e
+            INNER JOIN e.patient p
+            INNER JOIN e.doctor d
+            WHERE
+                d.id = :doc_id
+                AND
+                e.performed = 0'
+        )->setParameter('doc_id', $doctorId);
+
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Examination[] Returns an array of Examination objects
     //  */

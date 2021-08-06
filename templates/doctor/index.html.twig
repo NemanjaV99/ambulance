@@ -2,7 +2,56 @@
 
 {% block page_content %}
 
-    <h1>{{ test }}</h1>
-    <p>This will display all the list of examinations assigned to this doctor, with forms for changing/updating the specific examination</p>
+    <h1>Examinations waiting for you</h1>
+
+    {% if notice is defined %}
+        <div class="alert alert-success">{{ notice }}</div>
+    {% elseif error is defined %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    
+    <section class="section examinations waiting-examinations">
+
+        {% if examinations is empty %} 
+
+            <div class="alert alert-info" role='alert'>No examinations found.</div>
+
+        {% else %}
+
+            <div class="table-container">
+                <table class="table">
+                <thead>
+                    <tr>
+                        <th scope='col'>Patient</th>
+                        <th scope='col'>Doctor</th>
+                        <th scope='col'>Date</th>
+                        <th scope='col'>Status</th>
+                        <th scope='col'>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for examination in examinations %}
+
+                        <tr>
+                            <td>{{ examination.patient_fname ~ ' ' ~ examination.patient_lname }}</td>
+                            <td>{{ examination.doctor_fname ~  ' ' ~ examination.doctor_lname }}</td>
+                            <td>{{ examination.date | date('F j, Y, g:i a') }}</td>
+                            <td class="text-danger">{{ 'Waiting' }}</td>
+                            <td data-controller="table-action">
+                                <a href="{{ path('examination_update', { 'examinationId': examination.id }) }}"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}        
+
+                </tbody>
+
+                </table>
+            </div>
+
+        {% endif %}
+
+    </section>
 
 {% endblock %}

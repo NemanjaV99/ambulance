@@ -15,6 +15,12 @@
 
             {% endif %}
 
+            {% if is_granted('ROLE_DOCTOR') %} 
+
+                <a data-navigation-target="link" href="{{ path('doctor_home') }}" class="navigation__item">Doctor</a>
+
+            {% endif %}
+
             {% if ( is_granted('ROLE_DOCTOR') or is_granted('ROLE_COUNTER') ) %}
 
                 <a data-navigation-target="link" href="{{ path('counter_home') }}" class="navigation__item">Counter</a>

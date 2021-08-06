@@ -101,6 +101,7 @@ class ExaminationController extends AbstractController
         }
 
         return $this->redirectToRoute('counter_home');
+
     }
 
 

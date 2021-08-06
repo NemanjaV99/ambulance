@@ -95,7 +95,7 @@
 
                         <tr>
                             <td>{{ examination.patient_fname ~ ' ' ~ examination.patient_lname }}</td>
-                            <td>{{ examination.doctor_fname ~  ' ' ~examination.doctor_lname }}</td>
+                            <td>{{ examination.doctor_fname ~  ' ' ~ examination.doctor_lname }}</td>
                             <td>{{ examination.date | date('F j, Y, g:i a') }}</td>
                             <td class="text-danger">{{ 'Waiting' }}</td>
                             {% if examination.actions_allowed %}
