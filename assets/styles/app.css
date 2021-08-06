@@ -5,6 +5,7 @@
 *
 * COMPONENTS
 * Sidebar
+* Header
 * Content 
 * Form
 * Table
@@ -69,6 +70,22 @@ body {
         padding: 12px 0;
         margin: 10px 0 20px 0;
     }
+
+/*--------------------------------*\
+    #SIDEBAR
+\*--------------------------------*/
+.header {
+
+    background-color: rgb(70, 150, 0);
+    height: 50px;
+    line-height: 50px;
+    padding: 0 15px;
+}
+
+.header__logo {
+
+    text-transform: uppercase;
+}
 
 /*--------------------------------*\
     #CONTENT

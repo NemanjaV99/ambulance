@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block page_body %}
+
+    <main class="main">
+
+        <header class="header">
+            <div class="header__logo"><a class="link" href="{{ path('home') }}">Ambulance</a></div>
+        </header>
+
+        <section class="section form-container">{% block form_container %}{% endblock %}</section>
+
+    </main>
+
+{% endblock %}

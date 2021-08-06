@@ -1,27 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/layout.forms.html.twig' %}
 
-{% block title %}Examination{% endblock %}
+{% block page_title %}Create Examination{% endblock %}
 
-{% block page_body %}
+{% block form_container %}
 
-    <main class="main">
+    <h2 class="text-center">Create a new examination</h2>
+                
+    {{ form_start(create_examination_form) }}
 
-        <div class="form-container">
-            <h2 class="text-center">Create a new examination</h2>
-            
-            {{ form_start(create_examination_form) }}
-  
-              {{ form_row(create_examination_form.patient) }}
-              {{ form_row(create_examination_form.doctor) }}
-              {{ form_row(create_examination_form.date) }}
-              {% do create_examination_form.diagnosis.setRendered() %}
-              {% do create_examination_form.performed.setRendered() %}
-              {% do create_examination_form.performed_unchecked.setRendered() %}
-  
-            {{ form_end(create_examination_form) }}
-  
-        </div>
+        {{ form_row(create_examination_form.patient) }}
+        {{ form_row(create_examination_form.doctor) }}
+        {{ form_row(create_examination_form.date) }}
+        {% do create_examination_form.diagnosis.setRendered() %}
+        {% do create_examination_form.performed.setRendered() %}
 
-    </main>
+    {{ form_end(create_examination_form) }}
 
 {% endblock %}
