@@ -16,6 +16,7 @@
               {{ form_row(create_examination_form.date) }}
               {% do create_examination_form.diagnosis.setRendered() %}
               {% do create_examination_form.performed.setRendered() %}
+              {% do create_examination_form.performed_unchecked.setRendered() %}
   
             {{ form_end(create_examination_form) }}
   

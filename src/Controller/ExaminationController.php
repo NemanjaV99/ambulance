@@ -137,8 +137,8 @@ class ExaminationController extends AbstractController
             // Doctors can only update diagnosis and performed field
             $updateExaminationForm = $this->createForm(ExaminationType::class, $examination, [
                 'validation_groups' => 'update_by_doctor',
+                
             ]);
-        
 
         } else {
 
@@ -158,6 +158,17 @@ class ExaminationController extends AbstractController
         }
 
         if ($updateExaminationForm->isSubmitted() && $updateExaminationForm->isValid()) {
+
+            // If the examination has already been marked as performed, and user tries unchecking it ( marking it as not performed again ), 
+            // the checkbox will not be submitted, and entity won't get updated. We need to do this manually
+            // Check following: If entity has performed set to true (this is data from db), and the checkbox field is not submitted in the request
+            // that can only mean that user wants to uncheck it, mark it as 'not performed'
+            // Otherwise if he does not touch it, then it will be true, and submitted
+            if ($examination->getPerformed() && ! $updateExaminationForm->get('performed')->isSubmitted()) {
+
+                // Then set performed to false, otherwise leave as is
+                $examination->setPerformed(false);
+            }
 
             // Update the entity
             $entityManager->flush();

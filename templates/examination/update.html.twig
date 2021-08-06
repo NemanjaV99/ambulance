@@ -38,6 +38,7 @@
                     {{ form_row(update_examination_form.date) }}
                     {% do update_examination_form.diagnosis.setRendered() %}
                     {% do update_examination_form.performed.setRendered() %}
+                    {% do update_examination_form.performed_unchecked.setRendered() %}
 
                 {{ form_end(update_examination_form) }}
 
