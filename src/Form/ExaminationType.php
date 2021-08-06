@@ -17,11 +17,11 @@ class ExaminationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateTimeType::class, [
-                'data' => new DateTime(),
-            ])
+            ->add('date', DateTimeType::class)
             ->add('diagnosis', TextareaType::class)
-            ->add('performed', CheckboxType::class)
+            ->add('performed', CheckboxType::class, [
+                'required' => false,
+            ])
             ->add('patient')
             ->add('doctor')
             ->add('submit', SubmitType::class)
@@ -32,7 +32,7 @@ class ExaminationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Examination::class,
-            'validation_groups' => ['Default', 'create_examination']
+            'validation_groups' => ['Default', 'create_examination', 'update_by_counter', 'update_by_doctor']
         ]);
     }
 }

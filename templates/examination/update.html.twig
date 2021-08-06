@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Examination{% endblock %}
+
+{% block page_body %}
+
+    <main class="main">
+   
+        <div class="form-container">
+
+            {% if notice is defined %}
+                <div class="alert alert-success">{{ notice }}</div>
+            {% elseif error is defined %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+            <h2 class="text-center">Update Examination</h2>
+            {% if is_granted('ROLE_DOCTOR') %}
+
+                {# ROLE_DOCTOR - Can update only diagnosis and performed fields. #}
+                {{ form_start(update_examination_form) }}
+
+                    {{ form_row(update_examination_form.diagnosis) }}
+                    {{ form_row(update_examination_form.performed) }}
+                    {% do update_examination_form.date.setRendered() %}
+                    {% do update_examination_form.patient.setRendered() %}
+                    {% do update_examination_form.doctor.setRendered() %}
+
+                {{ form_end(update_examination_form) }}
+
+            {% else %}
+
+                {# ROLE_COUNTER - Can update date, doctor and patient fields. #}
+                {{ form_start(update_examination_form) }}
+
+                    {{ form_row(update_examination_form.patient) }}
+                    {{ form_row(update_examination_form.doctor) }}
+                    {{ form_row(update_examination_form.date) }}
+                    {% do update_examination_form.diagnosis.setRendered() %}
+                    {% do update_examination_form.performed.setRendered() %}
+
+                {{ form_end(update_examination_form) }}
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+{% endblock %}

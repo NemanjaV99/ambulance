@@ -23,25 +23,33 @@ class Examination
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="examinations")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Valid(groups={"create_examination"})
+     * @Assert\Valid(groups={"create_examination", "update_by_counter"})
      */
     private $patient;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\Type(type="\DateTimeInterface",groups={"create_examination"})
+     * @Assert\Type(type="\DateTimeInterface",groups={"create_examination", "update_by_counter"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity=Doctor::class, inversedBy="examinations")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank(groups={"create_examination"})
+     * @Assert\NotBlank(groups={"create_examination", "update_by_counter"})
      */
     private $doctor;
 
     /**
      * @ORM\Column(type="string", length=2000, nullable=true)
+     * @Assert\NotBlank(groups={"update_by_doctor"})
+     * @Assert\Length(
+     *      min=10,
+     *      max=2000,
+     *      groups={"update_by_doctor"},
+     *      minMessage="Diagnosis is too short, it should have at least 10 characters.",
+     *      maxMessage="Diagnosis is too long, it should not have more than 2000 characters."
+     * )
      */
     private $diagnosis;
 
@@ -116,7 +124,7 @@ class Examination
     }
 
     /**
-     *  * @Assert\Callback(groups={"create_examination"})
+     *  * @Assert\Callback(groups={"create_examination", "update_by_counter"})
      *  Callback for validating that a date is not set to a past date
      */
     public function validatePastDate(ExecutionContextInterface $context)

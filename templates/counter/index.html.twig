@@ -18,7 +18,7 @@
 
     <section class="section examinations performed-examinations mb-5 mt-5">
 
-        <h2 class="text-muted mb-3">Performed Examinations</h2>
+        <h2 class="text-muted mb-3">Performed</h2>
 
         {% if performed_examinations is empty %} 
 
@@ -49,7 +49,7 @@
                             {% if examination.actions_allowed %}
                                 <td data-controller="table-action">
                                     <button data-delete-index={{ examination.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
-                                    <a href="#"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
+                                    <a href="{{ path('examination_update', { 'examinationId': examination.id }) }}"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
                                 </td>
                             {% else %}
                                 <td>&nbsp;</td>
@@ -70,7 +70,7 @@
 
     <section class="section examinations waiting-examinations">
 
-        <h2 class="text-muted mb-3">Waiting Examinations</h2>
+        <h2 class="text-muted mb-3">Waiting</h2>
 
         {% if waiting_examinations is empty %} 
 
@@ -101,7 +101,7 @@
                             {% if examination.actions_allowed %}
                                 <td data-controller="table-action">
                                     <button data-delete-index={{ examination.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
-                                    <a href="#"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
+                                    <a href="{{ path('examination_update', { 'examinationId': examination.id }) }}"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
                                 </td>
                             {% else %}
                                 <td>&nbsp;</td>

@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Examination;
 use App\Entity\Doctor;
 use App\Form\ExaminationType;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ExaminationController extends AbstractController
 {
@@ -73,7 +74,7 @@ class ExaminationController extends AbstractController
 
                 } else if ($currentUser->isRole('ROLE_DOCTOR')) {
 
-                    // We will allow doctor users to only delete their own examinations. To prevent doctors users from deleting other doctor's examinations
+                    // We will allow doctor users to only delete their own examinations. To prevent doctor users from deleting other doctor's examinations
                     // Using the current user id, retrieve doctor object
                     $currentDoctor = $entityManager->getRepository(Doctor::class)->findByUserIdJoinedToUserAndType($currentUser->getId());
                     $examinationDoctor = $examination->getDoctor();
@@ -100,5 +101,72 @@ class ExaminationController extends AbstractController
         }
 
         return $this->redirectToRoute('counter_home');
+    }
+
+
+    /**
+     * @Route("/examination/{examinationId}/update", name="examination_update", requirements={"examinationId"="\d+"})
+     */
+    public function update(int $examinationId, Request $request)
+    {
+        $response = [];
+
+        // Find a patient with the given id
+        $entityManager = $this->getDoctrine()->getManager();
+        $examination = $entityManager->getRepository(Examination::class)->find($examinationId);
+
+        if (!$examination) {
+
+            throw $this->createNotFoundException('Examination with given id was not found.');
+        }
+
+        $currentUser = $this->getUser();
+
+        if ($currentUser->isRole('ROLE_DOCTOR')) {
+
+            $currentDoctor = $entityManager->getRepository(Doctor::class)->findByUserIdJoinedToUserAndType($currentUser->getId());
+            $examinationDoctor = $examination->getDoctor();
+
+            if ($currentDoctor['id'] !== $examinationDoctor->getId()) {
+
+                throw new AccessDeniedHttpException('You are not authorized to access this information.');
+            }
+            
+            // Otherwise, if the id's match, doctor is trying to update his own examination (examination assigned to him), allow him
+            // Doctors can only update diagnosis and performed field
+            $updateExaminationForm = $this->createForm(ExaminationType::class, $examination, [
+                'validation_groups' => 'update_by_doctor',
+            ]);
+        
+
+        } else {
+
+            // User has ROLE_COUNTER, since these two roles are only ones allowed to access these routes (^/examination)
+            $updateExaminationForm = $this->createForm(ExaminationType::class, $examination, [
+                'validation_groups' => 'update_by_counter'
+            ]);
+        
+        }
+
+        if ($request->isMethod('POST')) {
+
+            // Submitting manually prevents symfony from trying to set each field even if we are not trying to update all of them
+            // That is because of the manual submit with this method, and second bool argument that removes empty/missing entity fields from request
+            // handleRequest() tries to map all fields on an entity even if we don't set them in the form/request
+            $updateExaminationForm->submit($request->request->get($updateExaminationForm->getName()), false);
+        }
+
+        if ($updateExaminationForm->isSubmitted() && $updateExaminationForm->isValid()) {
+
+            // Update the entity
+            $entityManager->flush();
+
+            $response['notice'] = 'Successfully updated.';
+        }
+
+        $response['update_examination_form'] = $updateExaminationForm->createView();
+
+        return $this->render('examination/update.html.twig', $response);
+
     }
 }

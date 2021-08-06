@@ -110,8 +110,6 @@ class AdminController extends AbstractController
         // Before we then update, set the user pass back to the old one
 
         if ($updateDoctorForm->isSubmitted() && $updateDoctorForm->isValid()) {
-            
-            $data = $updateDoctorForm->getData();
 
             // Prevent setting password as empty string
             $doctor->getUser()->setPassword($userPass);
