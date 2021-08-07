@@ -15,42 +15,50 @@
           <div class="alert alert-danger">{{ error }}</div>
         {% endif %}
 
-        <div class="table-container">
-          <table class="table">
-            <thead>
-                <tr>
-                    <th scope='col'>ID</th>
-                    <th scope='col'>First Name</th>
-                    <th scope='col'>Last Name</th>
-                    <th scope='col'>JMBG</th>
-                    <th scope='col'>Note</th>
-                    <th scope='col'>City</th>
-                    <th scope='col'>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+        {% if patients is empty %}
 
-                {% for patient in patients %}
+          <div class="alert alert-info" role='alert'>No patients found.</div>
 
-                    <tr>
-                        <th scope='row'>{{ patient.id }}</th>
-                        <td>{{ patient.first_name }}</td>
-                        <td>{{ patient.last_name }}</td>
-                        <td>{{ patient.jmbg }}</td>
-                        <td>{{ patient.note }}</td>
-                        <td>{{ patient.loc_city }}</td>
-                        <td data-controller="table-action">
-                            <button data-delete-index={{ patient.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
-                            <a href="{{ path('admin_patient_update', { 'patientId': patient.id }) }}"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
-                        </td>
-                    </tr>
+        {% else %} 
 
-                {% endfor %}        
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                  <tr>
+                      <th scope='col'>ID</th>
+                      <th scope='col'>First Name</th>
+                      <th scope='col'>Last Name</th>
+                      <th scope='col'>JMBG</th>
+                      <th scope='col'>Note</th>
+                      <th scope='col'>City</th>
+                      <th scope='col'>Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
 
-            </tbody>
+                  {% for patient in patients %}
 
-          </table>
-        </div>
+                      <tr>
+                          <th scope='row'>{{ patient.id }}</th>
+                          <td>{{ patient.first_name }}</td>
+                          <td>{{ patient.last_name }}</td>
+                          <td>{{ patient.jmbg }}</td>
+                          <td>{{ patient.note }}</td>
+                          <td>{{ patient.loc_city }}</td>
+                          <td data-controller="table-action">
+                              <button data-delete-index={{ patient.id }} data-table-action-target='deleteBtn' data-action="table-action#appendToDelete" class='button-link button-link--delete' data-bs-toggle='modal' data-bs-target='#deleteConfirmModal'><i class="far fa-trash-alt"></i></button>
+                              <a href="{{ path('admin_patient_update', { 'patientId': patient.id }) }}"><button class='button-link button-link--update'><i class="far fa-edit"></i></button></a>
+                          </td>
+                      </tr>
+
+                  {% endfor %}        
+
+              </tbody>
+
+            </table>
+          </div>
+
+        {% endif %}
 
         <div class="form-container">
           <h2 class="text-center">Add a new patient</h2>

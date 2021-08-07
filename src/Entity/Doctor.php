@@ -28,7 +28,7 @@ class Doctor
      *      max = 100,
      *      groups={"doctor_create", "doctor_update"}
      * )
-     * @Assert\Type(type="alpha", groups={"doctor_create", "doctor_update"})
+     * @Assert\Type(type="alpha", groups={"doctor_create", "doctor_update"}, message="The first name can only contain alphabet letters.")
      */
     private $firstName;
 
@@ -40,7 +40,7 @@ class Doctor
      *      max = 100,
      *      groups={"doctor_create", "doctor_update"}
      * )
-     * @Assert\Type(type="alpha", groups={"doctor_create", "doctor_update"})
+     * @Assert\Type(type="alpha", groups={"doctor_create", "doctor_update"}, message="The last name can only contain alphabet letters.")
      */
     private $lastName;
 

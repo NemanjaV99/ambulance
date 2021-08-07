@@ -24,6 +24,7 @@ class Examination
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="examinations")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\Valid(groups={"create_examination", "update_by_counter"})
+     * @Assert\NotNull(groups={"create_examination", "update_by_counter"}, message="Patient does not exist.")
      */
     private $patient;
 
@@ -37,6 +38,7 @@ class Examination
      * @ORM\ManyToOne(targetEntity=Doctor::class, inversedBy="examinations")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank(groups={"create_examination", "update_by_counter"})
+     * @Assert\NotNull(groups={"create_examination", "update_by_counter"}, message="Doctor does not exist.")
      */
     private $doctor;
 

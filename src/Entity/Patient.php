@@ -7,12 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validation\Constraints as CustomAssert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=PatientRepository::class)
- * @UniqueEntity("jmbg")
+ * @UniqueEntity(fields={"jmbg"}, )
  */
 class Patient
 {
@@ -30,7 +29,7 @@ class Patient
      *      min = 3,
      *      max = 100
      * )
-     * @Assert\Type(type="alpha")
+     * @Assert\Type(type="alpha", message="The first name can only contain alphabet letters.")
      */
     private $firstName;
 
@@ -41,7 +40,7 @@ class Patient
      *      min = 3,
      *      max = 100
      * )
-     * @Assert\Type(type="alpha")
+     * @Assert\Type(type="alpha", message="The last name can only contain alphabet letters.")
      */
     private $lastName;
 
@@ -49,6 +48,7 @@ class Patient
      * @ORM\ManyToOne(targetEntity=Location::class, inversedBy="patients")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\Valid
+     * @Assert\NotNull(message="Location does not exist.")
      */
     private $location;
 
